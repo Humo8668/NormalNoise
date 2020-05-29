@@ -1,2 +1,3 @@
-﻿  main.cpp
+﻿  NormalNoise.cpp
+E:\Docs\programs\C++\NormalNoise\NormalNoise\NormalNoise\NormalNoise.cpp(66,9): warning C4101: sigma: неиспользованная локальная переменная
   NormalNoise.vcxproj -> E:\Docs\programs\C++\NormalNoise\NormalNoise\Debug\NormalNoise.exe

@@ -3,6 +3,8 @@
 #include <random>
 #include <math.h>
 
+const double M_PI = 3.141592653589793238;
+
 double Clamp(double val, double left, double right)
 {
 	if (val > right)
@@ -49,7 +51,7 @@ int NormalNoise::GenerateNodes()
 {
 	std::random_device mch;
 	std::default_random_engine generator(mch());
-	std::normal_distribution<double> NormalDistr(0, 0.5);	// sigma = 0.5 for 95% probability that randomizer will generate number in [-1,1]
+	std::normal_distribution<double> NormalDistr(0.0, 0.5);	// sigma = 0.5 for 95% probability that randomizer will generate number in [-1,1]
 
 	for (int i = 0; i < rows; i++)
 	{
@@ -66,26 +68,61 @@ int NormalNoise::GenerateNodes()
 	{
 		for (int j = 1; j < cols; j++)
 		{
+			//noiseMatrix[i * cols + j] = Clamp(NormalDistr(generator), -1, 1);
 			mu = (noiseMatrix[(i - 1) * cols + j] + noiseMatrix[i * cols + j - 1]) / 2.0;	// average
-			sigma = (Max(noiseMatrix[(i - 1) * cols + j], noiseMatrix[i * cols + j - 1]) - mu) / 2.0;	//	95% in [<lowest neighbout point>, <highest neighbour point>]
-			noiseMatrix[i * cols + j] = Clamp(GetRandom(mu, sigma), -1, 1);
+			//sigma = (Max(noiseMatrix[(i - 1) * cols + j], noiseMatrix[i * cols + j - 1]) - mu) / 2.0;	//	95% in [<lowest neighbout point>, <highest neighbour point>]
+			noiseMatrix[i * cols + j] = Clamp(GetRandom(mu, 0.5), -1, 1);
 		}
 	}
 
 	return 0;
 }
 
-double SmoothStep(double t, char FunctionType)
+double NormalNoise::SmoothStep(double t, char FunctionType)
 {
-	if (t < 0)
-		return 0.0;
-	else if (t > 1.0)
-		return 1.0;
-	else
-		return 3*t*t - 2*t*t*t;
+	switch (FunctionType)
+	{
+	case INTERPOLATE_SINUSOID:
+		if (t < 0)
+			return 0.0;
+		else if (t > 1.0)
+			return 1.0;
+		else
+		{
+			double sine = sin(t*(M_PI/2));
+			return sine * sine;
+		}
+	
+	case INTERPOLATE_LINEAR:
+		if (t < 0)
+			return 0.0;
+		else if (t > 1.0)
+			return 1.0;
+		else
+			return t;
+	
+	case INTERPOLATE_CUBIC:
+		if (t < 0)
+			return 0.0;
+		else if (t > 1.0)
+			return 1.0;
+		else
+			return 3*t*t - 2*t*t*t;
+
+
+	default:
+		if (t < 0)
+			return 0.0;
+		else if (t > 1.0)
+			return 1.0;
+		else
+			return t;
+	}
+	
+	return t;
 }
 
-double Interpolate(double left, double right, double t, char InterpolationType)
+double NormalNoise::Interpolate(double left, double right, double t, char InterpolationType)
 {
 	return left + (right - left) * SmoothStep(t, InterpolationType);
 }

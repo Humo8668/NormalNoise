@@ -1,5 +1,7 @@
 #pragma once
 #include <Windows.h>
+#include <atlimage.h>
+#include <atlstr.h>
 
 class Window
 {
@@ -24,10 +26,7 @@ public:
 	Window(int winX, int winY, int winW, int winH);
 	~Window(void);
 
-	//int DrawGraph(float (F)(float), float ScaleX, float ScaleY, COLORREF);
-
-	//void writeString(int x, int y, char* str);
-	//void writeString(int x, int y, double num);
+	void SaveScreen(const char* imageName);
 	
 	void ClearWindow();
 	void StartEventSystem();

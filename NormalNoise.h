@@ -13,10 +13,12 @@ private:
 
 	int GenerateNodes();
 
+	double SmoothStep(double t, char FunctionType);
+	double Interpolate(double left, double right, double t, char InterpolationType);
+
 public:
-	static const char INTERPOLATE_SMOOTHSTEP = 0;
+	static const char INTERPOLATE_SINUSOID = 0;
 	static const char INTERPOLATE_LINEAR = 1;
-	static const char INTERPOLATE_PARABOLIC = 2;
 	static const char INTERPOLATE_CUBIC = 3;
 
 	///<Summary>

@@ -97,6 +97,22 @@ void Window::ClearWindow()
 	return;
 }
 
+/*void Window::SaveScreen(const char* imageName)
+{
+	RECT rect = { 0 };
+
+	GetWindowRect(this->hWnd, &rect);
+	ATL::CImage* image_ = new CImage();
+	image_->Create(rect.right - rect.left, rect.bottom - rect.top, 32);
+
+	HDC device_context_handle = image_->GetDC();
+	PrintWindow(this->hWnd, device_context_handle, PW_CLIENTONLY);
+	image_->Save((LPCSTR)imageName);
+	image_->ReleaseDC();
+
+	delete image_;
+}*/
+
 
 void Window::StartEventSystem()
 {
